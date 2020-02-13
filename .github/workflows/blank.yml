@@ -18,11 +18,11 @@ jobs:
         
     - name: Azure Login
       uses: Azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
         
     - name: Add ip address to security rule to access the wls machine
-        run: |
+      run: |
          sourceAddressPrefixes=$(az network nsg rule show --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")
          myIP=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short)
          sourceAddressPrefixes=${sourceAddressPrefixes//[/$myIP}
@@ -31,8 +31,8 @@ jobs:
          echo sourceAddressPrefixes
          az network nsg rule update --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
-      - name: Verify deployed offer
-        run: |         
+    - name: Verify deployed offer
+      run: |         
          sudo apt-get install sshpass
          echo "connect the machine"
          sshpass -p ${ADMIN_PWD} ssh -tt weblogic@${HOSTNAME}
