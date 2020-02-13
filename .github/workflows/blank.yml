@@ -28,7 +28,7 @@ jobs:
          sourceAddressPrefixes=${sourceAddressPrefixes//[/$myIP}
          sourceAddressPrefixes=${sourceAddressPrefixes//,/ }
          sourceAddressPrefixes=${sourceAddressPrefixes//]/}
-         echo sourceAddressPrefixes
+         echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
     - name: Verify deployed offer
