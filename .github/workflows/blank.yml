@@ -37,7 +37,7 @@ jobs:
          az network nsg rule update --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
     - name: check host
-      run: cat >~/.ssh/config <<EOF
+      run: cat >~/.ssh/config << EOF
        # for all hosts
        Host *
         StrictHostKeyChecking no
