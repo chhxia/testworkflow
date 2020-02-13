@@ -36,16 +36,6 @@ jobs:
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
-    - name: check host
-      run: |
-       mkdir .ssh
-       touch ~/.ssh/config
-       cat <<EOF >~/.ssh/config
-       # for all hosts
-       Host *
-        StrictHostKeyChecking no
-       EOF
-
     - name: Verify deployed offer
       run: |                
          sudo apt-get install sshpass
