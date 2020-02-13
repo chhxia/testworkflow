@@ -38,6 +38,7 @@ jobs:
 
     - name: check host
       run: |
+       mkdir .ssh
        touch ~/.ssh/config
        cat <<EOF >~/.ssh/config
        # for all hosts
