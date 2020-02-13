@@ -40,7 +40,7 @@ jobs:
       run: |         
          sudo apt-get install sshpass
          echo "connect the machine"
-         sudo sshpass -p wlsEng@aug2019 -v ssh -q -o ConnectTimeout=600 -v -tt weblogic@13.92.245.97
+         sudo sshpass -p wlsEng@aug2019 -v ssh -o "StrictHostKeyChecking no" -o ConnectTimeout=600 -v -tt weblogic@13.92.245.97
          echo "change to root"
          echo ${ADMIN_PWD}
          sudo -S su -
