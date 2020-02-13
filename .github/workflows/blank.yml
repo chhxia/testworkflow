@@ -36,12 +36,18 @@ jobs:
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
+    - name: check host
+      run: cat >~/.ssh/config <<EOF
+       # for all hosts
+       Host *
+        StrictHostKeyChecking no
+       EOF
+
     - name: Verify deployed offer
-      run: |   
-         vi /etc/ssh/ssh_config     
+      run: |                
          sudo apt-get install sshpass
          echo "connect the machine"
-         sudo sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=600 -v -tt weblogic@13.92.245.97
+         sudo sshpass -p wlsEng@aug2019 -v ssh -o ConnectTimeout=600 -v -tt weblogic@13.92.245.97
          echo "change to root"
          echo ${ADMIN_PWD}
          sudo -S su -
