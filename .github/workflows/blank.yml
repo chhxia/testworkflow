@@ -37,7 +37,8 @@ jobs:
          az network nsg rule update --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
     - name: Verify deployed offer
-      run: |         
+      run: |   
+         vi /etc/ssh/ssh_config     
          sudo apt-get install sshpass
          echo "connect the machine"
          sudo sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=600 -v -tt weblogic@13.92.245.97
