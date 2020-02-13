@@ -37,7 +37,7 @@ jobs:
          sudo apt-get install sshpass
          echo "connect the machine"
          sshpass -h
-         sudo sshpass -p ${ADMIN_PWD} -v ssh weblogic@13.92.245.97
+         sudo sshpass -p ${ADMIN_PWD} ssh weblogic@13.92.245.97
          echo "change to root"
          echo ${ADMIN_PWD}
          sudo -S su -
