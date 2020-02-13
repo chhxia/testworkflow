@@ -2,10 +2,14 @@ name: CI
 
 on: [push]
 
+env:
+ ADMIN_PWD: ${{ secrets.ADMIN_PWD  }}
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
+   
 
     steps:
     - uses: actions/checkout@v2
@@ -36,7 +40,6 @@ jobs:
       run: |         
          sudo apt-get install sshpass
          echo "connect the machine"
-         sshpass -h
          sudo sshpass -p ${ADMIN_PWD} ssh weblogic@13.92.245.97
          echo "change to root"
          echo ${ADMIN_PWD}
