@@ -46,7 +46,7 @@ jobs:
       uses: sebastianpopp/ftp-action@v1.1.0
       with:
         host: wls-6ff71419a8.eastus.cloudapp.azure.com
-        user: root
+        user: weblogic
         password: ${{ secrets.ADMIN_PWD }}
         localDir: "/tmp"
         remoteDir: "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules"
