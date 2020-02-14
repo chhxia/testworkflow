@@ -40,4 +40,4 @@ jobs:
       run: |                
          sudo apt-get install sshpass
          echo "connect the machine"
-         sudo sshpass -p ${ADMIN_PWD} -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=1000 -v -tt weblogic@13.92.245.97 "echo ${ADMIN_PWD}; sudo -S su -; yum install vsftpd; exit"
+         sudo sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=1000 -v -tt weblogic@13.92.245.97 "echo ${ADMIN_PWD}; sudo -S su -; yum install vsftpd; exit"
