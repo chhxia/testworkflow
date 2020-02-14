@@ -39,7 +39,7 @@ jobs:
     - name: new file
       run: |
        echo $pwd
-       touch test.txt
+       touch /tmp/test.txt
        ls
       
     - name: ftp-action
@@ -48,7 +48,7 @@ jobs:
         host: weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com
         user: root
         password: ${{ secrets.ADMIN_PWD }}
-        localDir: "/home/runner/work/testworkflow/test.txt"
+        localDir: "/tmp/test.txt"
         remoteDir: "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules"
       
        
