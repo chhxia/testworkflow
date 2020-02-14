@@ -40,4 +40,5 @@ jobs:
       run: |                
          sudo apt-get install sshpass
          echo "connect the machine"
-         sudo sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com
+         result=$(sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com "ls -1 /home")
+         echo ${result}
