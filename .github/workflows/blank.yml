@@ -48,7 +48,7 @@ jobs:
         host: weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com
         user: root
         password: ${{ secrets.ADMIN_PWD }}
-        localDir: "/tmp/test.txt"
+        localDir: "/home/runner/work/testworkflow/testworkflow/README.md"
         remoteDir: "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules"
       
        
