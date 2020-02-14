@@ -40,4 +40,5 @@ jobs:
       run: |                
          sudo apt-get install sshpass
          echo "connect the machine"
-         sudo sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@13.92.245.97
+         results=$(sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@13.92.245.97 "apt-get install sshpass;sshpass -p wlsEng@aug2019 sudo su -;cd /u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules;echo#pwd")
+         echo ${results}
