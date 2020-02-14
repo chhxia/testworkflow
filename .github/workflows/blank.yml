@@ -27,14 +27,14 @@ jobs:
         
     - name: Add ip address to security rule to access the wls machine
       run: |
-         sourceAddressPrefixes=$(az network nsg rule show --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")
+         sourceAddressPrefixes=$(az network nsg rule show --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")
          myIP=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short)
          sourceAddressPrefixes=${sourceAddressPrefixes//[/$myIP}
          sourceAddressPrefixes=${sourceAddressPrefixes//,/ }
          sourceAddressPrefixes=${sourceAddressPrefixes//]/}
          sourceAddressPrefixes=${sourceAddressPrefixes//\"/}
          echo ${sourceAddressPrefixes}
-         az network nsg rule update --resource-group haiche-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
+         az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
     - name: Verify deployed offer
       run: |                
