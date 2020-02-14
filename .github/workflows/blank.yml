@@ -36,9 +36,17 @@ jobs:
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
-    - name: Verify deployed offer
-      run: |                
-         sudo apt-get install sshpass
-         echo "connect the machine"
-         result=$(sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com "echo \"wlsEng@aug2019\" | sudo -S su -;cd /u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules")
-         echo ${result}
+    - name: new file
+      run: touch test.txt
+      
+    - name: ftp-action
+      uses: sebastianpopp/ftp-action@v1.1.0
+      with:
+        host: weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com
+        user: root
+        password: ${{ secrets.ADMIN_PWD }}
+        localDir: "./test.txt"
+        remoteDir: "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules"
+      
+       
+         
