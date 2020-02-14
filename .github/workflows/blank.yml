@@ -39,17 +39,15 @@ jobs:
     - name: new file
       run: |
        echo $pwd
-       touch /github/workspace/test.txt
-       cd /github/workspace | ls
+       touch /tmp/test.txt
+       cd /tmp | ls
       
     - name: ftp-action
       uses: sebastianpopp/ftp-action@v1.1.0
       with:
-        host: weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com
+        host: wls-6ff71419a8.eastus.cloudapp.azure.com
         user: root
         password: ${{ secrets.ADMIN_PWD }}
-        localDir: "/github/workspace/test.txt"
-        remoteDir: "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules"
       
        
          
