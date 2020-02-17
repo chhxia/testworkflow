@@ -46,4 +46,4 @@ jobs:
         FTP_USERNAME: weblogic
         FTP_PASSWORD: ${{ secrets.ADMIN_PWD }}
         PORT: 22
-        ARGS: --delete
+        ARGS: --verbose
