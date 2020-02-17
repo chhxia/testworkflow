@@ -30,7 +30,7 @@ jobs:
          sourceAddressPrefixes=$(az network nsg rule show --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")
          sourceAddressPrefixes=$(echo ${sourceAddressPrefixes} | sed 's/,/ /g; s/\[//g; s/\]//g; s/"//g')
          myIP=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short)
-         sourceAddressPrefixes=$(echo ${myIP} ${sourceAddressPrefixes})
+         sourceAddressPrefixes=$(echo echo(${myIP}) ${sourceAddressPrefixes})
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
