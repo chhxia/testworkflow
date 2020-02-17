@@ -36,20 +36,15 @@ jobs:
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
-    - name: new file
-      run: |
-       echo $pwd
-       touch /tmp/test.txt
-       cd /tmp | ls
+    - name: List output files
+      run: ls
       
-    - name: ftp-action
-      uses: sebastianpopp/ftp-action@v1.1.0
-      with:
-        host: wls-6ff71419a8.eastus.cloudapp.azure.com
-        user: weblogic
-        password: ${{ secrets.ADMIN_PWD }}
-        localDir: "/tmp/"
-        remoteDir: "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules/"
-      
-       
-         
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: wls-6ff71419a8.eastus.cloudapp.azure.com
+        FTP_USERNAME: weblogic
+        FTP_PASSWORD: ${{ secrets.ADMIN_PWD }}
+        METHOD: sftp
+        PORT: 22
+        ARGS: --delete
