@@ -29,22 +29,13 @@ jobs:
       run: |
          sourceAddressPrefixes=$(az network nsg rule show --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")
          myIP=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short)
-         sourceAddressPrefixes=${sourceAddressPrefixes//[/$myIP}
-         sourceAddressPrefixes=${sourceAddressPrefixes//,/ }
-         sourceAddressPrefixes=${sourceAddressPrefixes//]/}
-         sourceAddressPrefixes=${sourceAddressPrefixes//\"/}
+         sourceAddressPrefixes=$(echo $sourceAddressPrefixes | sed -i 's/[/$myIP/g;s/,/ /g;s/]//g;s/\"//g')
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
-
-    - name: Create shell script to check wls foler
-      run: |
-       touch script.sh
-       cat >script.sh << EOF
-       echo ${ADMIN_PWD} | sudo -S [ -d "/u02/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules" ] && exit 0
-       exit 1
-       EOF
 
     - name: verify wls
       run: |
        ls
-       sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < ./test/scripts/verify-wls-path.sh
+       result=$(sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < ./test/scripts/script.sh)
+       echo $?
+       echo $result
