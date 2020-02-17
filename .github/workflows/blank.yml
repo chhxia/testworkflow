@@ -43,7 +43,7 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
       env:
         FTP_SERVER: wls-6ff71419a8.eastus.cloudapp.azure.com
-        FTP_USERNAME: weblogic
+        FTP_USERNAME: root
         FTP_PASSWORD: ${{ secrets.ADMIN_PWD }}
         METHOD: sftp
         PORT: 22
