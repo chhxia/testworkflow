@@ -37,7 +37,7 @@ jobs:
       with:
         azcliversion: 2.0.72
         inlineScript: |
-          az group create --verbose --name $resourceGroup --location $location
+          az group create --verbose --name ${GITHUB_RUN_ID}${GITHUB_RUN_NUMBER} --location eastus
         
     - name: Add ip address to security rule to access the wls machine
       run: |
