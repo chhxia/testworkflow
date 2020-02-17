@@ -47,4 +47,4 @@ jobs:
     - name: verify wls
       run: |
        ls
-       sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < ./test/scripts/script.sh
+       sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < ./test/scripts/verify-wls-path.sh
