@@ -47,4 +47,6 @@ jobs:
         FTP_PASSWORD: ${{ secrets.ADMIN_PWD }}
         METHOD: sftp
         PORT: 22
-        ARGS: --verbose
+        ARGS: --verbose --no-empty-dirs
+        LOCAL_DIR: build
+        REMOTE_DIR: /u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules
