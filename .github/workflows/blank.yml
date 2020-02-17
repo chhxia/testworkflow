@@ -36,7 +36,7 @@ jobs:
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
-    - name: Create shell script
+    - name: Create shell script to check wls foler
       run: |
        touch script.sh
        cat >script.sh << EOF
@@ -45,6 +45,4 @@ jobs:
        EOF
 
     - name: verify wls
-      run: |
-       result=$(sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < script.sh)
-       echo $?
+      run: sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < /test/scripts/script.sh
