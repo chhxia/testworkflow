@@ -36,17 +36,13 @@ jobs:
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
-    - name: List output files
-      run: ls
-      
-    - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@2.0.0
-      env:
-        FTP_SERVER: wls-6ff71419a8.eastus.cloudapp.azure.com
-        FTP_USERNAME: oracle
-        FTP_PASSWORD: ${{ secrets.ADMIN_PWD }}
-        METHOD: sftp
-        PORT: 22
-        ARGS: --verbose --no-empty-dirs
-        LOCAL_DIR: build
-        REMOTE_DIR: /u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules
+    - name: Create shell script
+      run: cat >script.sh <<EOF
+       echo ${ADMIN_PWD} | sudo -S [ -d "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules" ] && echo "WLS folder found."
+       exit
+       EOF
+
+    - name: verify wls
+      run: |
+       result=$(sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < script.sh)
+       echo $result
