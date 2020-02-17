@@ -24,6 +24,18 @@ jobs:
       uses: Azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Initialize env variables
+      run: |
+       resourceGroup=${GITHUB_RUN_ID}${GITHUB_RUN_NUMBER}
+       echo ${resourceGroup} ${location}
+      
+    - name: Azure CLI script file
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          az group create --verbose --name ${resourceGroup} --location ${location}
         
     - name: Add ip address to security rule to access the wls machine
       run: |
