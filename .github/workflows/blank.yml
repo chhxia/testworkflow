@@ -29,13 +29,13 @@ jobs:
       run: |
          sourceAddressPrefixes=$(az network nsg rule show --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")
          myIP=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short)
-         sourceAddressPrefixes=$(echo $sourceAddressPrefixes | sed -i 's/[/$myIP/g;s/,/ /g;s/]//g;s/\"//g')
+         sourceAddressPrefixes=$(echo $sourceAddressPrefixes | sed 's/[/$myIP/g;s/,/ /g;s/]//g;s/\"//g')
          echo ${sourceAddressPrefixes}
          az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
 
     - name: verify wls
       run: |
        ls
-       result=$(sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < ./test/scripts/script.sh)
+       result=$(sshpass -p "wlsEng@aug2019" -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < ./test/scripts/script.sh)
        echo $?
        echo $result
