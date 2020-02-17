@@ -45,4 +45,4 @@ jobs:
        EOF
 
     - name: verify wls
-      run: sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < /test/scripts/script.sh
+      run: sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < test/scripts/script.sh
