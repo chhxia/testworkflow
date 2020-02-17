@@ -47,4 +47,4 @@ jobs:
     - name: verify wls
       run: |
        result=$(sshpass -p wlsEng@aug2019 -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < script.sh)
-       echo $result
+       echo $?
