@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Initialize
-        run: |
+      run: |
          echo "##[set-env name=resourceGroup;]galia-wls"
     - uses: actions/checkout@v2
     - name: Run a one-line script
