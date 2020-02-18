@@ -33,24 +33,16 @@ jobs:
        echo ${resourceGroup} ${location}
        echo "##[set-env name=envResourceGroup;]${resourceGroup}" 
       
-    - name: Azure CLI script file
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.0.72
-        inlineScript: |
-          echo ${resourceGroup} ${location}
-          echo ${envResourceGroup}
-          az group create --verbose --name ${GITHUB_RUN_ID}${GITHUB_RUN_NUMBER} --location eastus
+    - name: Query name of Network Security Group
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            nsgName=$(az network nsg show -g galia-wls -n wls-nsg --query "name")
+            echo "##[set-env name=nsgName;]${nsgName}"
 
-    - name: Azure CLI script file
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.0.72
-        inlineScript: |
-          publicIP=$(az vm show --resource-group galia-wls --name WebLogicServerVM -d --query publicIps -o tsv)
-          echo ${publicIP}
-          echo "##[set-env name=envPublicIP;]${publicIP}" 
-
-
-    - name: Query public IP
-      run: echo ${envPublicIP}
+      - name: Verify Network Security Group
+        run: |
+          echo "expected name is: " ${nsg} ", the step will fail if not."
+          nsgName=$(echo ${nsgName})
+          [ ${nsgName} != ${nsg}] && exit 1
