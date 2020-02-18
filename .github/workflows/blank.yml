@@ -44,6 +44,6 @@ jobs:
 
     - name: Verify Network Security Group
       run: |
-        echo "expected name is: " ${nsg} ", the step will fail if not."
         nsgName=$(echo ${nsgName})
+        echo "expected name is: " ${nsg} "actual: " ${nagName}        
         [ ${nsgName} != ${nsg} ] && exit 1
