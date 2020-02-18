@@ -4,6 +4,7 @@ on: [push]
 
 env:
  ADMIN_PWD: ${{ secrets.ADMIN_PWD  }}
+ nsg: wls-nsg
 
 jobs:
   build:
