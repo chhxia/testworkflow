@@ -41,3 +41,16 @@ jobs:
           echo ${resourceGroup} ${location}
           echo ${envResourceGroup}
           az group create --verbose --name ${GITHUB_RUN_ID}${GITHUB_RUN_NUMBER} --location eastus
+
+    - name: Azure CLI script file
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          publicIP=$(az vm show --resource-group galia-wls --name WebLogicServerVM -d --query publicIps -o tsv)
+          echo ${publicIP}
+          echo "##[set-env name=envPublicIP;]${publicIP}" 
+
+
+    - name: Query public IP
+      run: echo ${envPublicIP}
