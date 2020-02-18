@@ -1,6 +1,6 @@
 name: Test az cli via env
 
-on: [push]
+on: [push, repository_dispatch]
 
 env:
  ADMIN_PWD: ${{ secrets.ADMIN_PWD  }}
