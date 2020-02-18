@@ -33,7 +33,7 @@ jobs:
     - name: Get IP of build machine
       run: |
         myIP=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short)
-        echo "##[set-env name=myIp;]${myIP}"
+        echo "##[set-env name=myIP;]${myIP}"
 
     - name: Add ip address to security rule to access the wls machine
       uses: azure/CLI@v1
