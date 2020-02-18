@@ -34,15 +34,15 @@ jobs:
        echo "##[set-env name=envResourceGroup;]${resourceGroup}" 
       
     - name: Query name of Network Security Group
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.0.72
-          inlineScript: |
-            nsgName=$(az network nsg show -g galia-wls -n wls-nsg --query "name")
-            echo "##[set-env name=nsgName;]${nsgName}"
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          nsgName=$(az network nsg show -g galia-wls -n wls-nsg --query "name")
+          echo "##[set-env name=nsgName;]${nsgName}"
 
-      - name: Verify Network Security Group
-        run: |
-          echo "expected name is: " ${nsg} ", the step will fail if not."
-          nsgName=$(echo ${nsgName})
-          [ ${nsgName} != ${nsg}] && exit 1
+    - name: Verify Network Security Group
+      run: |
+        echo "expected name is: " ${nsg} ", the step will fail if not."
+        nsgName=$(echo ${nsgName})
+        [ ${nsgName} != ${nsg}] && exit 1
