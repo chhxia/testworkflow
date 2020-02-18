@@ -47,4 +47,4 @@ jobs:
         echo $nsgName
         nsgName=${nsgName//\"/}
         echo "expected name is:" ${nsg} "actual:" ${nsgName}        
-        [ ${nsgName} != ${nsg} ] && exit 1
+        [ ${nsgName} == ${nsg} ] && exit 1
