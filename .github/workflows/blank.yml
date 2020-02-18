@@ -38,7 +38,7 @@ jobs:
       with:
         azcliversion: 2.0.72
         inlineScript: |
-          nsgName=$(az network nsg show -g galia-wls -n wls-nsg --query "name")
+          nsgName=$(az network nsg show -g galia-wls -n wls-nsg6 --query "name")
           echo "##[set-env name=nsgName;]${nsgName}"
 
     - name: Verify Network Security Group
