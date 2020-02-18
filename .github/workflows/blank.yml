@@ -1,4 +1,4 @@
-name: CI
+name: Test az cli via env
 
 on: [push]
 
@@ -21,15 +21,6 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
-
-    - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@2.0.0
-      env:
-        FTP_SERVER: wls.eastus2.cloudapp.azure.com
-        FTP_USERNAME: anonymous
-        FTP_PASSWORD:  
-        REMOTE_DIR: "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules"
-        ARGS: --delete
         
     - name: Azure Login
       uses: Azure/login@v1
@@ -38,27 +29,15 @@ jobs:
 
     - name: Initialize env variables
       run: |
-       resourceGroup=${GITHUB_RUN_ID}${GITHUB_RUN_NUMBER}
+       export resourceGroup=${GITHUB_RUN_ID}${GITHUB_RUN_NUMBER}
        echo ${resourceGroup} ${location}
+       echo "##[set-env name=envResourceGroup;]${resourceGroup}" 
       
     - name: Azure CLI script file
       uses: azure/CLI@v1
       with:
         azcliversion: 2.0.72
         inlineScript: |
+          echo ${resourceGroup} ${location}
+          echo ${envResourceGroup}
           az group create --verbose --name ${GITHUB_RUN_ID}${GITHUB_RUN_NUMBER} --location eastus
-        
-    - name: Add ip address to security rule to access the wls machine
-      run: |
-         sourceAddressPrefixes=$(az network nsg rule show --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")
-         myIP=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short)
-         sourceAddressPrefixes=$(echo ${myIP} ${sourceAddressPrefixes} | sed 's/,/ /g; s/\[//g; s/\]//g; s/"//g')
-         echo ${sourceAddressPrefixes}
-         az network nsg rule update --resource-group galia-wls --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes
-
-    - name: verify wls
-      run: |
-       ls
-       result=$(sshpass -p "wlsEng@aug2019" -v ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2000 -v -tt weblogic@wls-6ff71419a8.eastus.cloudapp.azure.com 'bash -s' < test/scripts/verify-wls-path.sh)
-       echo $?
-       echo $result
