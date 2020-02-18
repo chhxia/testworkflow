@@ -41,11 +41,20 @@ jobs:
         azcliversion: 2.0.72
         inlineScript: |
           echo "query existing source address prefixes"
-          sourceAddressPrefixes=$(az network nsg rule show --resource-group ${resourceGroup} --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")            
+          sourceAddressPrefixes=$(az network nsg rule show \
+            --resource-group ${resourceGroup} \
+            --nsg-name wls-nsg \
+            --name NRMS-Rule-101 \
+            --query "sourceAddressPrefixes")
           echo "IP of this machine: " ${myIP}
-          sourceAddressPrefixes=$(echo ${myIP} ${sourceAddressPrefixes} | sed 's/,/ /g; s/\[//g; s/\]//g; s/"//g')
+          sourceAddressPrefixes=$(echo ${myIP} ${sourceAddressPrefixes} | \
+            sed 's/,/ /g; s/\[//g; s/\]//g; s/"//g')
           echo ${sourceAddressPrefixes}
-          az network nsg rule update --resource-group ${resourceGroup} --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes 
+          az network nsg rule update \
+            --resource-group ${resourceGroup} \
+            --nsg-name wls-nsg \
+            --name NRMS-Rule-101 \
+            --source-address-prefixes $sourceAddressPrefixes 
 
     - name: Query name of Network Security Group
       uses: azure/CLI@v1
