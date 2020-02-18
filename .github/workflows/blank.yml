@@ -46,4 +46,4 @@ jobs:
       run: |
         echo "expected name is: " ${nsg} ", the step will fail if not."
         nsgName=$(echo ${nsgName})
-        [ ${nsgName} != ${nsg}] && exit 1
+        [ ${nsgName} != ${nsg} ] && exit 1
