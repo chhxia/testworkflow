@@ -8,8 +8,6 @@ env:
 
 jobs:
   build:
-    if: github.event.action == 'run_tests'
-    name: Run your tests
     runs-on: ubuntu-latest
     env:
      location: eastus
