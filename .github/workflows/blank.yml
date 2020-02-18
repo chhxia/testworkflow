@@ -21,6 +21,15 @@ jobs:
       run: |
         echo Add other actions to build,
         echo test, and deploy your project.
+
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: wls.eastus2.cloudapp.azure.com
+        FTP_USERNAME: anonymous
+        FTP_PASSWORD:  
+        REMOTE_DIR: "/u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules"
+        ARGS: --delete
         
     - name: Azure Login
       uses: Azure/login@v1
