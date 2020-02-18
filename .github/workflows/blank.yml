@@ -14,6 +14,9 @@ jobs:
    
 
     steps:
+    - name: Initialize
+        run: |
+         echo "##[set-env name=resourceGroup;]galia-wls"
     - uses: actions/checkout@v2
     - name: Run a one-line script
       run: echo Hello, world!
@@ -27,12 +30,23 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Initialize env variables
+    - name: Get IP of build machine
       run: |
-       export resourceGroup=${GITHUB_RUN_ID}${GITHUB_RUN_NUMBER}
-       echo ${resourceGroup} ${location}
-       echo "##[set-env name=envResourceGroup;]${resourceGroup}" 
-      
+        myIP=$(dig @ns1.google.com TXT o-o.myaddr.l.google.com +short)
+        echo "##[set-env name=myIp;]${myIP}"
+
+    - name: Add ip address to security rule to access the wls machine
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            echo "query existing source address prefixes"
+            sourceAddressPrefixes=$(az network nsg rule show --resource-group ${resourceGroup} --nsg-name wls-nsg --name NRMS-Rule-101 --query "sourceAddressPrefixes")            
+            echo "IP of this machine: " ${myIP}
+            sourceAddressPrefixes=$(echo ${myIP} ${sourceAddressPrefixes} | sed 's/,/ /g; s/\[//g; s/\]//g; s/"//g')
+            echo ${sourceAddressPrefixes}
+            az network nsg rule update --resource-group ${resourceGroup} --nsg-name wls-nsg --name NRMS-Rule-101 --source-address-prefixes $sourceAddressPrefixes 
+
     - name: Query name of Network Security Group
       uses: azure/CLI@v1
       with:
@@ -40,12 +54,3 @@ jobs:
         inlineScript: |
           nsgName=$(az network nsg show -g galia-wls -n wls-nsg6 --query "name")
           echo "##[set-env name=nsgName;]${nsgName}"
-
-    - name: Verify Network Security Group
-      run: |
-        echo $nsgName
-        nsgName=${nsgName//\"/}
-        echo "expected name is:" ${nsg} "actual:" ${nsgName}      
-        echo $[ ${nsgName} != ${nsg} ]
-        echo $[ ${nsgName} == ${nsg} ]
-        [ ${nsgName} != ${nsg} ] && exit 1
