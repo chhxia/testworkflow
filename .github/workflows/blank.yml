@@ -16,7 +16,9 @@ jobs:
     steps:
     - name: Initialize
       run: |
-         echo "##[set-env name=resourceGroup;]galia-wls"
+         echo "##[set-env name=resourceGroup;]4169849518"
+         echo "##[set-env name=wlsPublicIP;]40.117.145.38"
+
     - uses: actions/checkout@v2
     - name: Run a one-line script
       run: echo Hello, world!
@@ -56,10 +58,12 @@ jobs:
             --name NRMS-Rule-101 \
             --source-address-prefixes $sourceAddressPrefixes 
 
-    - name: Query name of Network Security Group
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.0.72
-        inlineScript: |
-          nsgName=$(az network nsg show -g galia-wls -n wls-nsg6 --query "name")
-          echo "##[set-env name=nsgName;]${nsgName}"
+    - name: Verify WebLogic Server
+        id: verify-wls
+        run: |
+          echo "pubilc IP of wls machine:" ${wlsPublicIP}
+          echo "test port..."
+          timeout 20 sh -c 'until nc -zv $0 $1; do sleep 1; done' ${wlsPublicIP} 22
+          echo "check if /u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules exists, the step will fail if not."
+          result=$(sshpass -p wlsEng@aug2019 -v ssh -p 22 -o StrictHostKeyChecking=no -o ConnectTimeout=1000 -v -tt weblogic@${wlsPublicIP} 'bash -s' < arm-oraclelinux-wls/test/scripts/verify-wls-path.sh)
+          echo $result
