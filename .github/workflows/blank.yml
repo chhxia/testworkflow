@@ -56,7 +56,15 @@ jobs:
             --resource-group ${resourceGroup} \
             --nsg-name wls-nsg \
             --name NRMS-Rule-101 \
-            --source-address-prefixes $sourceAddressPrefixes 
+            --source-address-prefixes $sourceAddressPrefixes
+    - name: Restart wls VM
+      id: restart-wls-wm
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          echo "restart vm to make sure security rule work."
+          az vm restart -g ${resourceGroup} -n WebLogicServerVM
 
     - name: Verify WebLogic Server
       id: verify-wls
