@@ -70,14 +70,4 @@ jobs:
         azcliversion: 2.0.72
         inlineScript: |
           echo "restart vm to make sure security rule work."
-          az vm restart -g ${resourceGroup} -n WebLogicServerVM
-
-    - name: Verify WebLogic Server
-      id: verify-wls
-      run: |
-        echo "pubilc IP of wls machine:" ${wlsPublicIP}
-        echo "test port..."
-        timeout 20 sh -c 'until nc -zv $0 $1; do sleep 1; done' ${wlsPublicIP} 22
-        echo "check if /u01/app/wls/install/Oracle/Middleware/Oracle_Home/wlserver/modules exists, the step will fail if not."
-        result=$(sshpass -p wlsEng@aug2019 -v ssh -p 22 -o StrictHostKeyChecking=no -o ConnectTimeout=1000 -v -tt weblogic@${wlsPublicIP} 'bash -s' < test/scripts/verify-wls-path.sh)
-        echo $result
+          az vm restart -g ${resourceGroup} -n WebLogicServerVM   
