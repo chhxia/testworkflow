@@ -57,6 +57,11 @@ jobs:
             --nsg-name wls-nsg \
             --name NRMS-Rule-101 \
             --source-address-prefixes $sourceAddressPrefixes
+          az network nsg rule show \
+            --resource-group ${resourceGroup} \
+            --nsg-name wls-nsg \
+            --name NRMS-Rule-101 \
+            --query "sourceAddressPrefixes"
     - name: Restart wls VM
       id: restart-wls-wm
       uses: azure/CLI@v1
